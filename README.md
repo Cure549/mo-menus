@@ -169,14 +169,14 @@ Project Link: [https://github.com/Cure549/mo-menus](https://github.com/Cure549/m
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/cure549/mo-menus.svg?style=for-the-badge
 [contributors-url]: https://github.com/Cure549/mo-menus/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/cure549/mo-menus.svg?style=for-the-badge
 [forks-url]: https://github.com/Cure549/mo-menus/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/cure549/mo-menus.svg?style=for-the-badge
 [stars-url]: https://github.com/Cure549/mo-menus/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/cure549/mo-menus.svg?style=for-the-badge
 [issues-url]: https://github.com/Cure549/mo-menus/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/cure549/mo-menus.svg?style=for-the-badge
 [license-url]: https://github.com/Cure549/mo-menus/blob/main/LICENSE.txt
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: _images/screenshot.png
