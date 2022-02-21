@@ -3,6 +3,7 @@
 import os
 from mo_menus.Entry import Entry
 from mo_menus.Prettify import Prettify
+from Boxxy.Boxxy import Boxxy
 
 
 class Menu:
@@ -11,9 +12,15 @@ class Menu:
         self._title = title
         self._entries = self._eval_entries(entries)
 
+        # Supported options: "classic",
+        #                    "experimental"
+        self._draw_mode = "classic"
+
         # Sub menu pre-reqs
         self._is_submenu = False
         self._parent_menu = None
+
+        # Currently not working.
         self._wipe_on_input = False
 
         # Design options
@@ -46,6 +53,14 @@ class Menu:
         # Get's replaced with back button if menu is a sub-menu.
         quit_entry = Entry(self._quit_keyword)
         self._entries.update({0: quit_entry})
+
+    @property
+    def draw_mode(self):
+        return self._draw_mode
+
+    @draw_mode.setter
+    def draw_mode(self, mode):
+        self._draw_mode = mode
 
     def prev_color(self, *color):
         self._prev_color = ""
@@ -143,6 +158,7 @@ class Menu:
 
     def draw_menu(self):
         """Draws menu and correlated sub menus to stdout."""
+        prev_button = ""
 
         if self._is_submenu:
             # local vars to make PEP-8 compliance possible
@@ -151,26 +167,40 @@ class Menu:
             prev_color = self._prev_color
             end_color = self.__end_color
             prev_to_title = f"{prev_desc} to {title_desc}"
-            print(f"{prev_color}← [ 0 ] : {prev_to_title}", end_color)
+            # Sets prev_button to be back
+            prev_button = f"{prev_color}⮪ [0] {prev_to_title}{end_color}"
         else:
-            print(
-                self._prev_color,
-                f"← [ 0 ] : {(self._entries.get(0)).description} program",
-                self.__end_color,
-            )
+            # Sets prev_button to be quit
+            prev_button = f"{self._prev_color}⮪ [0] {(self._entries.get(0)).description} program{self.__end_color}"
 
-        print(self._title_color, f"\n\t~{self._title}~", self.__end_color)
+        if (self.draw_mode == "classic"):
+            print(prev_button)
 
-        # Print every entry
-        for key in range(1, len(self._entries.keys()) + 1):
-            if (self._entries.get(key) is not None):
-                # local vars to make PEP-8 compliance possible
-                # 'f' prefix for 'format'
-                f_end_color = self.__end_color
-                f_key = f"{self._option_color}[ {key} ] : {f_end_color}"
-                f_description = f"{(self._entries.get(key)).description}"
-                f_entry = f"{self._entry_color}{f_description}{f_end_color}"
-                print(f_key, f_entry, sep="")
+            print(self._title_color, f"\n\t~{self._title}~", self.__end_color)
+
+            # Print every entry
+            for key in range(1, len(self._entries.keys()) + 1):
+                if (self._entries.get(key) is not None):
+                    # local vars to make PEP-8 compliance possible
+                    # 'f' prefix for 'format'
+                    f_end_color = self.__end_color
+                    f_key = f"{self._option_color}[ {key} ] : {f_end_color}"
+                    f_description = f"{(self._entries.get(key)).description}"
+                    f_entry = f"{self._entry_color}{f_description}{f_end_color}"
+                    print(f_key, f_entry, sep="")
+
+        elif (self.draw_mode == "experimental"):
+
+            box_title = self._title
+            box_prev = f"⮪ [0] {(self._entries.get(0)).description}"
+            box_data = []
+
+            for key in range(1, len(self._entries.keys()) + 1):
+                if (self._entries.get(key) is not None):
+                    box_data.append(
+                        f"[ {key} ] : {(self._entries.get(key)).description}")
+
+            Boxxy(box_title, box_prev, box_data, "single", 5)
 
         if self._enable_input:
             # Result of this call is a validated key from user
