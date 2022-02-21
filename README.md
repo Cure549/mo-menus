@@ -79,7 +79,7 @@ Getting started with Mo-Menus is extremely easy. Just follow the steps below to 
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Colorama is currently the only prerequisite needed. This allows Mo-Menus! to have support for custom colors.
 * colorama
   ```py
   pip install colorama
