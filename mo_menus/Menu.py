@@ -3,7 +3,7 @@
 import os
 from mo_menus.Entry import Entry
 from mo_menus.Prettify import Prettify
-from Boxxy.Boxxy import Boxxy
+from boxxy.Boxxy import Boxxy
 
 
 class Menu:
