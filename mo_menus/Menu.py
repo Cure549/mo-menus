@@ -42,6 +42,7 @@ class Menu:
         )
         
         # Adds default quit button.
+        # Get's replaced with back button if menu is a sub-menu.
         quit_entry = Entry(self._quit_keyword)
         self._entries.update({0 : quit_entry})
         
