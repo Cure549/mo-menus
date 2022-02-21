@@ -4,9 +4,9 @@
 import os
 
 # Custom imports
-from Menu import Menu
-from Entry import Entry
-from Prettify import Prettify
+from mo_menus.Menu import Menu
+from mo_menus.Entry import Entry
+from mo_menus.Prettify import Prettify
 
 def main():
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-from Entry import Entry
-from Prettify import Prettify
+from .Entry import Entry
+from .Prettify import Prettify
 
 class Menu:
     def __init__(self, title, entries):
