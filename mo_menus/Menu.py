@@ -145,11 +145,13 @@ class Menu:
         """Draws menu and correlated sub menus to stdout."""
 
         if self._is_submenu:
-            print(
-                f"{self._prev_color}← [ 0 ] : \
-                    {(self._entries.get(0)).description} to \
-                        {self._parent_menu._title}", self.__end_color,
-            )
+            # local vars to make PEP-8 compliance possible
+            title_desc = {self._parent_menu._title}
+            prev_desc = (self._entries.get(0)).description
+            prev_color = self._prev_color
+            end_color = self.__end_color
+            prev_to_title = f"{prev_desc} to {title_desc}"
+            print(f"{prev_color}← [ 0 ] : {prev_to_title}", end_color)
         else:
             print(
                 self._prev_color,
@@ -162,12 +164,13 @@ class Menu:
         # Print every entry
         for key in range(1, len(self._entries.keys()) + 1):
             if (self._entries.get(key) is not None):
-                print(
-                    f"{self._option_color}[ {key} ] : \
-                        {self.__end_color}{self._entry_color}\
-                            {(self._entries.get(key)).description}\
-                                {self.__end_color}"
-                )
+                # local vars to make PEP-8 compliance possible
+                # 'f' prefix for 'format'
+                end_color = {self.__end_color}
+                f_key = f"{self._option_color}[ {key} ] : {end_color}"
+                f_description = ((self._entries.get(key)).description)
+                f_entry = f"{self._entry_color}{f_description}{end_color}"
+                print(f_key, f_entry, sep="")
 
         if self._enable_input:
             # Result of this call is a validated key from user

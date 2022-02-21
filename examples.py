@@ -11,11 +11,11 @@ from mo_menus.Prettify import Prettify
 def main():
     # Uncomment an example call to see result.
     # Each example is heavily documented.
-    example1()
+    # example1()
     # example2()
     # example3()
     # example4()
-    # example5()
+    example5()
 
 
 def example1():
