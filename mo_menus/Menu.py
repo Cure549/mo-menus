@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-from .Entry import Entry
-from .Prettify import Prettify
+from mo_menus.Entry import Entry
+from mo_menus.Prettify import Prettify
 
 
 class Menu:
@@ -146,7 +146,7 @@ class Menu:
 
         if self._is_submenu:
             # local vars to make PEP-8 compliance possible
-            title_desc = {self._parent_menu._title}
+            title_desc = self._parent_menu._title
             prev_desc = (self._entries.get(0)).description
             prev_color = self._prev_color
             end_color = self.__end_color
@@ -166,10 +166,10 @@ class Menu:
             if (self._entries.get(key) is not None):
                 # local vars to make PEP-8 compliance possible
                 # 'f' prefix for 'format'
-                end_color = {self.__end_color}
-                f_key = f"{self._option_color}[ {key} ] : {end_color}"
-                f_description = ((self._entries.get(key)).description)
-                f_entry = f"{self._entry_color}{f_description}{end_color}"
+                f_end_color = self.__end_color
+                f_key = f"{self._option_color}[ {key} ] : {f_end_color}"
+                f_description = f"{(self._entries.get(key)).description}"
+                f_entry = f"{self._entry_color}{f_description}{f_end_color}"
                 print(f_key, f_entry, sep="")
 
         if self._enable_input:
