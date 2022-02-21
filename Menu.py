@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import subprocess
-import sys
 import os
 from Entry import Entry
 from Prettify import Prettify
@@ -16,6 +14,15 @@ class Menu:
         self._is_submenu = False
         self._parent_menu = None
         self._wipe_on_input = False
+
+        # Design options
+        self.__prefix = "\033["
+        self.__default_color = f"{self.__prefix}0m"
+        self.__end_color = self.__default_color
+        self._prev_color = self.__default_color
+        self._title_color = self.__default_color
+        self._option_color = self.__default_color
+        self._entry_color = self.__default_color
         
         # Stores user input
         self._enable_input = True
@@ -38,6 +45,30 @@ class Menu:
         quit_entry = Entry(self._quit_keyword)
         self._entries.update({0 : quit_entry})
         
+    def prev_color(self, *color):
+        self._prev_color = ""
+
+        for format in color:
+            self._prev_color += format
+
+    def title_color(self, *color):
+        self._title_color = ""
+
+        for format in color:
+            self._title_color += format 
+    
+    def option_color(self, *color):
+        self._option_color = ""
+
+        for format in color:
+            self._option_color += format
+
+    def entry_color(self, *color):
+        self._entry_color = ""
+
+        for format in color:
+            self._entry_color += format
+
     def start(self):
         # Menu Loop
         while True:
@@ -49,7 +80,7 @@ class Menu:
             # DO NOT add quit entry to a sub menu. Add a back entry instead.
             if (self._entries.get(self._user_input).description == self._quit_keyword):
                 break
-        
+
             # Invoke what entry references
             entry = self._entries.get(self._user_input)
             if (isinstance(entry.invoke, Menu)):
@@ -105,24 +136,21 @@ class Menu:
                 print(print_error)
                 self.draw_menu()
 
-
     def draw_menu(self):
         """ Draws menu and correlated sub menus to stdout.
-
-        Args:
-            do_input (bool, optional): Request input immediately after drawing. Defaults to False.
         """
-        if (self._is_submenu):
-            print(f"← [ 0 ] : {(self._entries.get(0)).description} to {self._parent_menu._title}")
-        else:
-            print(Prettify.RED, f"← [ 0 ] : {(self._entries.get(0)).description} program", Prettify.END)
 
-        print(f"\n{self._title}")
+        if (self._is_submenu):
+            print(f"{self._prev_color}← [ 0 ] : {(self._entries.get(0)).description} to {self._parent_menu._title}", self.__end_color)
+        else:
+            print(self._prev_color, f"← [ 0 ] : {(self._entries.get(0)).description} program", self.__end_color)
+
+        print(self._title_color, f"\n\t~{self._title}~", self.__end_color)
         
         # Print every entry
         for key in range(1, len(self._entries.keys())+1):
             if (self._entries.get(key) != None):
-                print(f"[ {key} ] : {(self._entries.get(key)).description}")
+                print(f"{self._option_color}[ {key} ] : {self.__end_color}{self._entry_color}{(self._entries.get(key)).description}{self.__end_color}")
                 
         if (self._enable_input):
             # Result of this call is a validated key from user stored in 'self._user_input'
@@ -145,6 +173,7 @@ class Menu:
                 return self._entries.get(entry)
     
     # Evaluates entries and returns a dictionary of entries
+    # DO NOT TOUCH!
     def _eval_entries(self, dirty_entries):
         # Create Dictionary
         clean_entries = {}

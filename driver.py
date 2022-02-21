@@ -9,9 +9,16 @@ from Entry import Entry
 from Prettify import Prettify
 
 def main():
+
+    monsters = [
+        "Demon",
+        "Dog",
+        "Rabbit"
+    ]
+
     main_entries = [
         Entry("Show Health", show_hp, 5, 74, 18),
-        Entry("Show Monster", show_monster, "Skeleton"),
+        Entry("Show Monster", show_monsters, monsters),
         Entry("Show Attack Options")
     ]
     
@@ -38,10 +45,19 @@ def main():
     attack_menu = Menu("Attack Menu", attack_entries)
     inventory_menu = Menu("Inventory Menu", inventory_entries)
     
-    # Add features
+    # ----------Add features----------------
     
-    # Add quit button
+    # Add error verbosity
     main_menu.verbose_errors(True)
+
+    # Add Color using Prettify
+    main_menu.prev_color(Prettify.RED)
+    main_menu.title_color(Prettify.GREEN)
+    main_menu.option_color(Prettify.YELLOW)
+
+    attack_menu.prev_color(Prettify.RED)
+    attack_menu.title_color(Prettify.GREEN)
+    attack_menu.option_color(Prettify.YELLOW)
     
     # Sets entry to open submenu
     main_menu.give_entry("Show Attack Options").opens_menu(attack_menu)
@@ -56,13 +72,14 @@ def main():
     # Start Menu
     main_menu.start()
     
-def show_hp(hp, strength, agility):
+def show_hp(hp=0, strength=0, agility=0):
     print("HP:", hp)
     print("Strength:", strength)
     print("Agility:", agility)
     
-def show_monster(monster):
-    print("Monster:", monster)
+def show_monsters(monsters):
+    for mnstr in monsters:
+        print(mnstr)
 
 if (__name__ == "__main__"):
     # If this file is invoked from the terminal, call main.
