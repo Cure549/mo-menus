@@ -4,12 +4,13 @@ import os
 from .Entry import Entry
 from .Prettify import Prettify
 
+
 class Menu:
     def __init__(self, title, entries):
         # Handle params
         self._title = title
         self._entries = self._eval_entries(entries)
-        
+
         # Sub menu pre-reqs
         self._is_submenu = False
         self._parent_menu = None
@@ -23,14 +24,14 @@ class Menu:
         self._title_color = self.__default_color
         self._option_color = self.__default_color
         self._entry_color = self.__default_color
-        
+
         # Stores user input
         self._enable_input = True
         self._user_input = None
         self._request_msg = "Please select an option: > "
         self._quit_keyword = "Quit"
         self._back_keyword = "Back"
-        
+
         # Error handling
         self._error_msg = f"{Prettify.RED}ERROR:{Prettify.END} Invalid input"
         self._verbose_errors = False
@@ -38,14 +39,14 @@ class Menu:
             KeyboardInterrupt,
             EOFError,
             ValueError,
-            UnboundLocalError
+            UnboundLocalError,
         )
-        
+
         # Adds default quit button.
         # Get's replaced with back button if menu is a sub-menu.
         quit_entry = Entry(self._quit_keyword)
-        self._entries.update({0 : quit_entry})
-        
+        self._entries.update({0: quit_entry})
+
     def prev_color(self, *color):
         self._prev_color = ""
 
@@ -56,8 +57,8 @@ class Menu:
         self._title_color = ""
 
         for format in color:
-            self._title_color += format 
-    
+            self._title_color += format
+
     def option_color(self, *color):
         self._option_color = ""
 
@@ -75,53 +76,56 @@ class Menu:
         while True:
             # Draw Menu and get validated input
             self.draw_menu()
-            
+
             # Quits Menu
             # Should only ever be called by Top Level Menu
             # DO NOT add quit entry to a sub menu. Add a back entry instead.
-            if (self._entries.get(self._user_input).description == self._quit_keyword):
+            if (
+                self._entries.get(self._user_input).description
+                == self._quit_keyword
+            ):
                 break
 
             # Invoke what entry references
             entry = self._entries.get(self._user_input)
-            if (isinstance(entry.invoke, Menu)):
+            if isinstance(entry.invoke, Menu):
                 # Do submenu things
                 entry.invoke.start()
                 break
             else:
-                if (entry.invoke_params == None):
+                if (entry.invoke_params is None):
                     entry.invoke()
                 else:
                     entry.invoke(*entry.invoke_params())
 
     def verbose_errors(self, toggle):
         self._verbose_errors = toggle
-        
+
     def wipe_prints(self):
-        if (self._wipe_on_input):
+        if self._wipe_on_input:
             # Get Count
             # +2 due to input and title line.
             line_count = len(self._entries.keys()) + 2
             # Place Cursor and clear menu
             print(f"\033[{line_count}F\033[J", end="")
-        
+
     def get_validated_input(self):
-        """ Sets self._user_input to a validated key that can be used to access one of 
-            the existing entries.
+        """Sets self._user_input to a validated key that can be
+        used to access one of the existing entries.
         """
         try:
             self._user_input = int(input(self._request_msg))
             test_key = self._entries.get(self._user_input)
             # Forcefully set input and test_key. Run validation afterwards.
-            if (test_key == None):
+            if (test_key is None):
                 raise ValueError("Entry does not exist.")
-            
+
         except self._check_errors as e:
             print_error = ""
-            
-            if (type(e) == EOFError):
+
+            if type(e) == EOFError:
                 # Keeps consistency in feedback in terms of format.
-                if (self._verbose_errors):
+                if self._verbose_errors:
                     print_error = f"{self._error_msg}, {e}"
                 else:
                     print_error = f"{self._error_msg}"
@@ -129,7 +133,7 @@ class Menu:
                 print(print_error)
                 self.draw_menu()
             else:
-                if (self._verbose_errors):
+                if self._verbose_errors:
                     print_error = f"{self._error_msg} {e}"
                 else:
                     print_error = f"{self._error_msg}"
@@ -138,41 +142,54 @@ class Menu:
                 self.draw_menu()
 
     def draw_menu(self):
-        """ Draws menu and correlated sub menus to stdout.
-        """
+        """Draws menu and correlated sub menus to stdout."""
 
-        if (self._is_submenu):
-            print(f"{self._prev_color}← [ 0 ] : {(self._entries.get(0)).description} to {self._parent_menu._title}", self.__end_color)
+        if self._is_submenu:
+            print(
+                f"{self._prev_color}← [ 0 ] : \
+                    {(self._entries.get(0)).description} to \
+                        {self._parent_menu._title}", self.__end_color,
+            )
         else:
-            print(self._prev_color, f"← [ 0 ] : {(self._entries.get(0)).description} program", self.__end_color)
+            print(
+                self._prev_color,
+                f"← [ 0 ] : {(self._entries.get(0)).description} program",
+                self.__end_color,
+            )
 
         print(self._title_color, f"\n\t~{self._title}~", self.__end_color)
-        
+
         # Print every entry
-        for key in range(1, len(self._entries.keys())+1):
-            if (self._entries.get(key) != None):
-                print(f"{self._option_color}[ {key} ] : {self.__end_color}{self._entry_color}{(self._entries.get(key)).description}{self.__end_color}")
-                
-        if (self._enable_input):
-            # Result of this call is a validated key from user stored in 'self._user_input'
+        for key in range(1, len(self._entries.keys()) + 1):
+            if (self._entries.get(key) is not None):
+                print(
+                    f"{self._option_color}[ {key} ] : \
+                        {self.__end_color}{self._entry_color}\
+                            {(self._entries.get(key)).description}\
+                                {self.__end_color}"
+                )
+
+        if self._enable_input:
+            # Result of this call is a validated key from user
+            # stored in 'self._user_input'
             self.get_validated_input()
-            
+
         self.wipe_prints()
-    
+
     def make_me_submenu(self, parent_menu):
         # Create back button that invokes parent_menu
         back_entry = Entry("Back", parent_menu)
-        self._entries.update({0 : back_entry})
-        
+        self._entries.update({0: back_entry})
+
         self._parent_menu = parent_menu
         self._is_submenu = True
-        
+
     def give_entry(self, requested_descr):
         # Returns <Entry object> that has the requested description.
         for entry in self._entries:
-            if (self._entries.get(entry).description == requested_descr):
+            if self._entries.get(entry).description == requested_descr:
                 return self._entries.get(entry)
-    
+
     # Evaluates entries and returns a dictionary of entries
     # DO NOT TOUCH!
     def _eval_entries(self, dirty_entries):
@@ -182,10 +199,11 @@ class Menu:
         # Set starting option value
         option_val = 1
         for entry in dirty_entries:
-            # Loop through each dirty entry, and append option_val as key and entry as value.
-            clean_entries.update({option_val : entry})
+            # Loop through each dirty entry, and append option_val as key
+            # and entry as value.
+            clean_entries.update({option_val: entry})
             # Increment option_val
             option_val += 1
-        
-        #return dictionary
+
+        # return dictionary
         return clean_entries

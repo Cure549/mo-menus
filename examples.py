@@ -3,8 +3,10 @@
 # Custom imports
 from mo_menus.Menu import Menu
 from mo_menus.Entry import Entry
-# Prettify is not necessary. Just a nice library to have to reduce ANSI color code clutter.
+# Prettify is not necessary.
+# Just a nice library to have to reduce ANSI color code clutter.
 from mo_menus.Prettify import Prettify
+
 
 def main():
     # Uncomment an example call to see result.
@@ -14,6 +16,7 @@ def main():
     # example3()
     # example4()
     # example5()
+
 
 def example1():
     """
@@ -31,12 +34,14 @@ def example1():
     # Starts Menu
     main_menu.start()
 
+
 def example2():
     """
         This is how additional entries are added.
-        To add additional parameters to a function call, simply add them as a parameter to Entry()
+        To add additional parameters to a function call,
+        simply add them as a parameter to Entry()
     """
-    
+
     # Create list of entries
     main_entries = [
         Entry("Do Thing", print, "Passed in parameter"),
@@ -49,11 +54,12 @@ def example2():
     # Starts Menu
     main_menu.start()
 
+
 def example3():
     """
         This covers how to create a sub-menu.
     """
-    
+
     # Create list of entries
     main_entries = [
         Entry("Do Thing", print, "Passed in parameter"),
@@ -80,6 +86,7 @@ def example3():
     # Starts Menu
     main_menu.start()
 
+
 def example4():
     """
         Now let's cover how to make the entries have a more dynamic action.
@@ -92,7 +99,7 @@ def example4():
 
     def my_mana(mana):
         print("My Mana is:", mana)
-    
+
     # Create list of entries
     main_entries = [
         Entry("Basic Entry", print, "Passed in parameter"),
@@ -123,7 +130,8 @@ def example4():
 
 def example5():
     """
-        Now that all the fundamentals have been covered, let's go over some customization options.
+        Now that all the fundamentals have been covered, let's go over
+        some customization options.
         Additional customization features will be added in the future.
     """
 
@@ -133,7 +141,7 @@ def example5():
 
     def my_mana(mana):
         print("My Mana is:", mana)
-    
+
     def print_monsters(monsters):
         for mnstr in monsters:
             print(mnstr)
@@ -145,7 +153,7 @@ def example5():
         "Zombie",
         "Vampire"
     ]
-    
+
     # Create list of entries
     main_entries = [
         Entry("Basic Entry", print, "Passed in parameter"),
@@ -197,6 +205,7 @@ def example5():
 
     # Starts Menu
     main_menu.start()
+
 
 if (__name__ == "__main__"):
     # If this file is invoked from the terminal, call main.
